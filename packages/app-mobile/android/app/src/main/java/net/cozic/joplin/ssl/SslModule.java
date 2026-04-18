@@ -11,6 +11,8 @@ import com.facebook.react.modules.network.NetworkingModule;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
+import net.cozic.joplin.cronet.CronetInitializer;
+
 import static net.cozic.joplin.ssl.SslUtils.TRUST_ALL_CERTS;
 import static net.cozic.joplin.ssl.SslUtils.getTrustySocketFactory;
 
@@ -32,11 +34,13 @@ public class SslModule extends ReactContextBaseJavaModule {
             if (isIgnoreTlsErrors) {
                 NetworkingModule.setCustomClientBuilder(
                         builder -> {
+                            CronetInitializer.INSTANCE.applyToBuilder(builder);
                             builder.sslSocketFactory(getTrustySocketFactory(), TRUST_ALL_CERTS);
                             builder.hostnameVerifier((hostname, session) -> true);
                         });
             } else {
-                NetworkingModule.setCustomClientBuilder(null);
+                NetworkingModule.setCustomClientBuilder(
+                        builder -> CronetInitializer.INSTANCE.applyToBuilder(builder));
             }
             promise.resolve(prev);
         } catch (Exception e) {

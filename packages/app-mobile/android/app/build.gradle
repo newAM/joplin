@@ -140,4 +140,10 @@ dependencies {
     // The version of react-native is set by the React Native Gradle Plugin
     implementation("com.facebook.react:react-android")
     implementation("com.facebook.react:hermes-android")
+
+    // Cronet (Play Services + bundled fallback)
+    // Enables modern TLS features, such as post-quantum key exchange
+    implementation("com.google.android.gms:play-services-cronet:18.1.0")
+    implementation("org.chromium.net:cronet-fallback:119.6045.31")
+    implementation("com.google.net.cronet:cronet-okhttp:0.1.0")
 }
